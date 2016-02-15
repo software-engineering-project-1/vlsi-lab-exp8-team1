@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href='http://fonts.googleapis.com/css?family=Life+Savers:400,700' rel='stylesheet' type='text/css'>
+        
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+            }
+            #zwibbler-div {
+                position: absolute;
+                top: 128px;
+                left: 250px;     
+                bottom: 0;     
+                right: 0;
+                background-image: url(images1/board.png);
+                background-repeat: no-repeat;
+                background-size: cover;
+            }
+            #header {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 64px;
+                background: black;        
+                font-family: "Life Savers", sans-serif;
+                font-weight: bold;
+                font-size: 50px;
+                line-height: 60px;
+                color: #ccc;
+            }
+            #subheader {
+                position: absolute;
+                top: 64px;
+                left: 0px;
+                right: 0;
+                height: 64px;
+                background: black;        
+                font-family: "Life Savers", sans-serif;
+                font-weight: bold;
+                font-size: 50px;
+                line-height: 60px;
+                color: #ccc;
+            }
+
+            #header img {
+                vertical-align: middle;
+                margin-top: 5px;
+            }
+            #toolbar {
+                position: absolute;
+                top: 64px;
+                left: 0px;
+                width: 250px;
+                bottom: 0;
+                
+            }
+            #toolbar div {
+                display: inline-block;
+                vertical-align: middle;
+                text-align: center;       
+                width: 110px;
+                margin: 10px 0px;       
+            }
+
+            #toolbar div img {
+                max-width: 90px;
+            }
+        </style>
+    </head>
+    <body>
+        <script src="./zwibbler-demo.js"></script>
+        
+        <div id=header>
+            
+            <div style="display:inline-block;vertical-align:middle;margin-left:1em;">
+                <span style="color:white">D-FLIP FLOP:</span>Positive Edge Trigger 
+            </div>
+        </div>
+        
+        
+        <div id= subheader>
+         <center>
+         <a href="" id="a"></a>
+         <button onclick="Simulate()">Simulate</button>
+         <select id ="InputWave">
+              <option value="1">InputWave1</option>
+              <option value="2">InputWave2</option>
+              <option value="3">InputWave3</option>
+              <option value="4">InputWave4</option>
+        </select>
+        </center> 
+        </div>
+        <div id=toolbar>
+        </div>
+        <div id=zwibbler-div> </div>
+        <script src="./exp.js"></script>
+
+        <script>
+        function CheckCircuit(){
+            return true;
+        }
+        function download() {
+          var inputwave = document.getElementById("InputWave").value;
+          var a = document.getElementById("a");
+          a.href = "./codes/dffp/dffp"+ inputwave+".vcd";
+          a.download = "dffp.vcd";
+          a.click();
+        }
+        function Simulate() {
+                if(CheckCircuit()){
+                    download();
+                }
+                else{
+
+                    // input circuit is incorrect 
+                    alert("Input Circuit Is incorrect");
+                }
+            }
+
+            </script>
+
+
+    </body>
+</html>

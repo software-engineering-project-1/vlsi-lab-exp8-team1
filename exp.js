@@ -1,121 +1,5 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <link href='http://fonts.googleapis.com/css?family=Life+Savers:400,700' rel='stylesheet' type='text/css'>
-        <style>
-            body {
-                margin: 0;
-                padding: 0;
-                overflow: hidden;
-            }
-            #zwibbler-div {
-                position: absolute;
-                top: 128px;
-                left: 250px;     
-                bottom: 0;     
-                right: 0;
-                background-image: url(images1/board.png);
-                background-repeat: no-repeat;
-                background-size: cover;
-            }
-            #header {
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                height: 64px;
-                background: black;        
-                font-family: "Life Savers", sans-serif;
-                font-weight: bold;
-                font-size: 50px;
-                line-height: 60px;
-                color: #ccc;
-            }
-            #subheader {
-                position: absolute;
-                top: 64px;
-                left: 0px;
-                right: 0;
-                height: 64px;
-                background: black;        
-                font-family: "Life Savers", sans-serif;
-                font-weight: bold;
-                font-size: 50px;
-                line-height: 60px;
-                color: #ccc;
-            }
 
-            #header img {
-                vertical-align: middle;
-                margin-top: 5px;
-            }
-            #toolbar {
-                position: absolute;
-                top: 64px;
-                left: 0px;
-                width: 250px;
-                bottom: 0;
-                
-            }
-            #toolbar div {
-                display: inline-block;
-                vertical-align: middle;
-                text-align: center;       
-                width: 110px;
-                margin: 10px 0px;       
-            }
 
-            #toolbar div img {
-                max-width: 90px;
-            }
-        </style>
-    </head>
-    <body>
-        <script src="./zwibbler-demo.js"></script>
-        <div id=header>
-            <img src="http://zwibbler.com/wd-pick.png" id=pick-button><img src="http://zwibbler.com/paperio/icon-arrow.png" id=arrow-button><img src="http://zwibbler.com/paperio/icon-undo.png" id=undo-button><img src="http://zwibbler.com/paperio/icon-redo.png" id=redo-button> 
-            <div style="display:inline-block;vertical-align:middle;margin-left:1em;">
-                <span style="color:white">D-FLIP FLOP:</span>Positive Edge Trigger 
-            </div>
-        </div>
-        
-        <div id= subheader>
-         <center>
-         <button onclick="Simulate()">Simulate</button>
-         <select id ="InputWave">
-              <option value="1">InputWave1</option>
-              <option value="2">InputWave2</option>
-              <option value="3">InputWave3</option>
-              <option value="4">InputWave4</option>
-        </select>
-        </center> 
-        </div>
-        <div id=toolbar>
-        </div>
-        <div id=zwibbler-div> </div>
-
-        <script>
-        function CheckCircuit(){
-            return true;
-        }
-        function download() {
-          var inputwave = document.getElementById("InputWave").value;
-          a.href = "./codes/dffp/dffp"+ inputwave;
-          a.download = "code.vcd";
-        }
-        function Simulate() {
-                if(CheckCircuit()){
-                    // input function was correct
-                    //alert("Downloading verilog File");
-                    //alert(document.getElementById("InputWave").value);
-                    download();
-                }
-                else{
-
-                    // input circuit is incorrect 
-                    alert("Input Circuit Is incorrect");
-                }
-            }
             function Path() {
                 this.commands = [];
             }
@@ -254,9 +138,7 @@
                 e("toolbar").appendChild(div);
                 img.src = url;
 				console.log(url);
-                img.ondragstart = function(e) {
-                    DraggingImage = img;
-                };
+                
 
                 img.dropfn = function(x, y) {
                     if (actionfn) {
@@ -312,65 +194,7 @@
                 
             }
 			
-			/*
-            addShapeTool("./images1/comp1.gif", function(x, y, path) {
-                var w = 100;
-                var h = 50;
-                path.moveTo(x-w/2, y-h/2);
-                path.lineTo(x+w/2, y-h/2);
-                path.lineTo(x+w/2, y+h/2);
-                path.lineTo(x-w/2, y+h/2);
-                path.lineTo(x-w/2, y-h/2);
-                path.close();
-            });
-
-            addShapeTool("http://zwibbler.com/paperio/icon-parallelogram.png", function(x, y, path) {
-                var w = 100;
-                var h = 50;
-                var s = 25;
-                path.moveTo(x-w/2+s/2, y-h/2);
-                path.lineTo(x+w/2+s/2, y-h/2);
-                path.lineTo(x+w/2-s/2, y+h/2);
-                path.lineTo(x-w/2-s/2, y+h/2);
-                path.lineTo(x-w/2+s/2, y-h/2);
-                path.close();
-            });
-
-            addShapeTool("http://zwibbler.com/paperio/icon-circle.png", function(x, y, path) {
-                var radius = 50;
-                path.moveTo( x, y - radius );
-                path.cornerTo( x + radius, y - radius, 
-                                      x + radius, y );
-                path.cornerTo( x + radius, y + radius, 
-                                      x, y + radius );
-                path.cornerTo( x - radius, y + radius, 
-                                      x - radius, y);
-                path.cornerTo( x - radius, y - radius, 
-                                      x, y - radius );
-                path.close();
-            });
-
-            addShapeTool("http://zwibbler.com/paperio/icon-triangle.png", function(x, y, path) {
-                var radius = 50;
-                path.moveTo( x, y - radius );
-                path.lineTo( x + radius, y + radius );
-                path.lineTo( x - radius, y + radius );
-                path.lineTo(x, y-radius);
-                path.close();
-            });
-
-            addShapeTool("http://zwibbler.com/paperio/icon-diamond.png", function(x, y, path) {
-                var radius = 50;
-                path.moveTo( x, y - radius );
-                path.lineTo( x + radius, y );
-                path.lineTo( x, y + radius );
-                path.lineTo( x - radius, y );
-                path.lineTo( x, y-radius);
-                path.close();
-            }); */
-			
-			
-            addImageDummyTool("./images1/comp1.gif", actionfn); 
+			addImageDummyTool("./images1/comp1.gif", actionfn); 
 			addImageDummyTool("./images1/comp2.gif", actionfn);
 			addWireTool("./images1/comp3.gif", actionfn);
 			addImageTool("./images1/comp4.gif", "./images1/input.jpg", actionfn);
@@ -410,9 +234,3 @@
             onevent("redo-button", "click", function(e) {
                 zwibbler.redo();
             });
-
-        </script>
-
-
-    </body>
-</html>
