@@ -83,10 +83,10 @@
          <center>
          <button onclick="Simulate()">Simulate</button>
          <select id ="InputWave">
-              <option value="I1">InputWave1</option>
-              <option value="I2">InputWave2</option>
-              <option value="I3">InputWave3</option>
-              <option value="I4">InputWave4</option>
+              <option value="1">InputWave1</option>
+              <option value="2">InputWave2</option>
+              <option value="3">InputWave3</option>
+              <option value="4">InputWave4</option>
         </select>
         </center> 
         </div>
@@ -95,11 +95,20 @@
         <div id=zwibbler-div> </div>
 
         <script>
+        function CheckCircuit(){
+            return true;
+        }
+        function download() {
+          var inputwave = document.getElementById("InputWave").value;
+          a.href = "./codes/dffp/dffp"+ inputwave;
+          a.download = "code.vcd";
+        }
         function Simulate() {
-                if(1){
+                if(CheckCircuit()){
                     // input function was correct
                     //alert("Downloading verilog File");
-                    alert(document.getElementById("InputWave").value);
+                    //alert(document.getElementById("InputWave").value);
+                    download();
                 }
                 else{
 
