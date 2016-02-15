@@ -2,9 +2,6 @@
 <html>
     <head>
         <link href='http://fonts.googleapis.com/css?family=Life+Savers:400,700' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-  	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         <style>
             body {
                 margin: 0;
@@ -20,19 +17,6 @@
                 background-image: url(images1/board.png);
                 background-repeat: no-repeat;
                 background-size: cover;
-            }
-            #subheader{
-            	position: absolute;
-                top: 70;
-                left: 0;
-                right: 0;
-                height: 64px;
-                background: black;        
-                font-family: "Life Savers", sans-serif;
-                font-weight: bold;
-                font-size: 50px;
-                line-height: 60px;
-                color: #ccc;
             }
             #header {
                 position: absolute;
@@ -81,20 +65,9 @@
                 <span style="color:white">D-FLIP FLOP:</span>Positive Edge Trigger 
             </div>
         </div>
-        <div id = subheader>
-	       <div class="dropdown">
-		  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
-		  <span class="caret"></span></button>
-		  <ul class="dropdown-menu">
-		    <li>Input-Wave1</li>
-		    <li>InputWave2</li>
-		    <li>InputWave3</li>
-		  </ul>
-		</div>
-	</div>
         <div id=toolbar>
         </div>
-        <div id=zwibbler-div></div>
+        <div id=zwibbler-div> </div>
 
         <script>
             function Path() {
@@ -227,6 +200,40 @@
                 
             }
 			
+			function addImageDummyTool(url, actionfn) {
+                var div = document.createElement("div");
+                var img = document.createElement("img");
+                div.appendChild(img);
+                e("toolbar").appendChild(div);
+                img.src = url;
+				console.log(url);
+                img.ondragstart = function(e) {
+                    DraggingImage = img;
+                };
+
+                img.dropfn = function(x, y) {
+                    if (actionfn) {
+                        actionfn(x, y, url);
+						
+                    } else {
+                        zwibbler.beginTransaction();
+                        var id = zwibbler.createNode("ImageNode", {
+                            url: url
+                        });
+                        zwibbler.translateNode(id, x-img.naturalWidth/2,
+                                y-img.naturalHeight/2);
+                        
+						zwibbler.commitTransaction();
+						
+                    }
+                };
+
+                img.onclick = function() {
+                     alert("For this Experiment, you don't need this component");
+                };
+                
+            }
+			
 			function addWireTool(url, actionfn) {
                 var div = document.createElement("div");
                 var img = document.createElement("img");
@@ -316,18 +323,18 @@
             }); */
 			
 			
-            addImageTool("./images1/comp1.gif", actionfn); 
-			addImageTool("./images1/comp2.gif", actionfn);
+            addImageDummyTool("./images1/comp1.gif", actionfn); 
+			addImageDummyTool("./images1/comp2.gif", actionfn);
 			addWireTool("./images1/comp3.gif", actionfn);
 			addImageTool("./images1/comp4.gif", actionfn);
-			addImageTool("./images1/comp5.gif", actionfn);
-			addImageTool("./images1/comp6.gif", actionfn);
-			addImageTool("./images1/comp7.gif", actionfn);
-			addImageTool("./images1/comp8.gif", actionfn);
-			addImageTool("./images1/comp9.gif", actionfn);
+			addImageDummyTool("./images1/comp5.gif", actionfn);
+			addImageDummyTool("./images1/comp6.gif", actionfn);
+			addImageDummyTool("./images1/comp7.gif", actionfn);
+			addImageDummyTool("./images1/comp8.gif", actionfn);
+			addImageDummyTool("./images1/comp9.gif", actionfn);
 			addImageTool("./images1/comp10.gif", actionfn);
 			addImageTool("./images1/comp11.gif", actionfn);
-			addImageTool("./images1/comp12.gif", actionfn);
+			addImageDummyTool("./images1/comp12.gif", actionfn);
             
 
             onevent("zwibbler-div", "dragover", function(e) {
