@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href='http://fonts.googleapis.com/css?family=Life+Savers:400,700' rel='stylesheet' type='text/css'>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+            }
+            #zwibbler-div {
+                position: absolute;
+                top: 64px;
+                left: 250px;     
+                bottom: 0;     
+                right: 0;
+                background-image: url(images1/board.png);
+                background-repeat: no-repeat;
+                background-size: cover;
+            }
+            #header {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 64px;
+                background: black;        
+                font-family: "Life Savers", sans-serif;
+                font-weight: bold;
+                font-size: 50px;
+                line-height: 60px;
+                color: #ccc;
+            }
+
+            #header img {
+                vertical-align: middle;
+                margin-top: 5px;
+            }
+            #toolbar {
+                position: absolute;
+                top: 64px;
+                left: 0px;
+                width: 250px;
+                bottom: 0;
+                overflow-y: scroll;
+            }
+            #toolbar div {
+                display: inline-block;
+                vertical-align: middle;
+                text-align: center;       
+                width: 110px;
+                margin: 10px 0px;       
+            }
+
+            #toolbar div img {
+                max-width: 90px;
+            }
+        </style>
+    </head>
+    <body>
+        <script src="./zwibbler-demo.js"></script>
+        <div id=header>
+            <img src="http://zwibbler.com/wd-pick.png" id=pick-button><img src="http://zwibbler.com/paperio/icon-arrow.png" id=arrow-button><img src="http://zwibbler.com/paperio/icon-undo.png" id=undo-button><img src="http://zwibbler.com/paperio/icon-redo.png" id=redo-button> 
+            <div style="display:inline-block;vertical-align:middle;margin-left:1em;">
+                <span style="color:white">D-FLIP FLOP:</span>Positive Edge Trigger 
+            </div>
+        </div>
+        <div id=toolbar>
+        </div>
+        <div id=zwibbler-div></div>
+
+        <script>
+            function Path() {
+                this.commands = [];
+            }
+
+            Path.prototype = {
+                toArray: function() {
+                    return this.commands;
+                },
+
+                moveTo: function(x,y) {
+                    this.commands.push(0);
+                    this.commands.push(x);
+                    this.commands.push(y);
+                },
+
+                lineTo: function(x,y) {
+                    this.commands.push(1);
+                    this.commands.push(x);
+                    this.commands.push(y);
+                }, 
+
+                cornerTo: function(cx, cy, x, y) {
+                    this.commands.push(6);
+                    this.commands.push(x);
+                    this.commands.push(y);
+                    this.commands.push(cx);
+                    this.commands.push(cy);
+                },
+
+                close: function() {
+                    this.commands.push(7);
+                }
+            };
+
+            function e(id) {
+                return document.getElementById(id);
+            }
+
+            function onevent(id, name, fn) {
+                e(id).addEventListener(name, fn, false);
+            }
+
+            var zwibbler = Zwibbler.create("zwibbler-div", {
+                showToolbar: false,
+                multilineText: true
+            });
+
+            var DraggingImage;
+            function addShapeTool(url, actionfn) {
+                var div = document.createElement("div");
+                var img = document.createElement("img");
+                div.appendChild(img);
+                e("toolbar").appendChild(div);
+                img.src = url;
+                img.ondragstart = function(e) {
+                    DraggingImage = img;
+                };
+
+                img.dropfn = function(x, y) {
+                    var path = new Path();
+                    actionfn(x, y, path);
+                    zwibbler.createNode("PathNode", {
+                        commands: path.toArray(),
+                        roundRadius: 5,
+                        sloppiness: 0,
+                        shadow: true,
+                        fillStyle: "#59a8eb",
+                        fontSize: "15",
+                        text: url
+                    });
+                };
+
+                img.onclick = function() {
+                    img.dropfn(100, 100);
+                };
+            }
+
+			function actionfn(x,y,imageName){
+                zwibbler.beginTransaction();
+                var imageid = zwibbler.createNode("ImageNode", {
+                    url: imageName
+                });
+				
+				
+                var textid = zwibbler.createNode("TextNode", {
+                    text: "E0",
+                    fontSize: 15
+                });
+
+                zwibbler.translateNode(imageid, x-100, y-100);
+                zwibbler.translateNode(textid, x-100+15, y-100+65);
+
+                //zwibbler.createGroup([imageid, textid]);
+                zwibbler.commitTransaction();
+            }
+			
+            function addImageTool(url, actionfn) {
+                var div = document.createElement("div");
+                var img = document.createElement("img");
+                div.appendChild(img);
+                e("toolbar").appendChild(div);
+                img.src = url;
+				console.log(url);
+                img.ondragstart = function(e) {
+                    DraggingImage = img;
+                };
+
+                img.dropfn = function(x, y) {
+                    if (actionfn) {
+                        actionfn(x, y, url);
+						
+                    } else {
+                        zwibbler.beginTransaction();
+                        var id = zwibbler.createNode("ImageNode", {
+                            url: url
+                        });
+                        zwibbler.translateNode(id, x-img.naturalWidth/2,
+                                y-img.naturalHeight/2);
+                        
+						zwibbler.commitTransaction();
+						
+                    }
+                };
+
+                img.onclick = function() {
+                    img.dropfn(100, 100);
+                };
+                
+            }
+			
+			function addWireTool(url, actionfn) {
+                var div = document.createElement("div");
+                var img = document.createElement("img");
+                div.appendChild(img);
+                e("toolbar").appendChild(div);
+                img.src = url;
+				console.log(url);
+                img.ondragstart = function(e) {
+                    DraggingImage = img;
+                };
+
+                img.dropfn = function(x, y) {
+                    if (actionfn) {
+                        actionfn(x, y, url);
+                    } else {
+                        zwibbler.beginTransaction();
+                        var id = zwibbler.createNode("ImageNode", {
+                            url: url
+                        });
+                        zwibbler.translateNode(id, x-img.naturalWidth/2,
+                                y-img.naturalHeight/2);
+                        zwibbler.commitTransaction();
+                    }
+                };
+
+                img.onclick = function() {
+					  zwibbler.useLineTool();
+                };
+                
+            }
+			
+			/*
+            addShapeTool("./images1/comp1.gif", function(x, y, path) {
+                var w = 100;
+                var h = 50;
+                path.moveTo(x-w/2, y-h/2);
+                path.lineTo(x+w/2, y-h/2);
+                path.lineTo(x+w/2, y+h/2);
+                path.lineTo(x-w/2, y+h/2);
+                path.lineTo(x-w/2, y-h/2);
+                path.close();
+            });
+
+            addShapeTool("http://zwibbler.com/paperio/icon-parallelogram.png", function(x, y, path) {
+                var w = 100;
+                var h = 50;
+                var s = 25;
+                path.moveTo(x-w/2+s/2, y-h/2);
+                path.lineTo(x+w/2+s/2, y-h/2);
+                path.lineTo(x+w/2-s/2, y+h/2);
+                path.lineTo(x-w/2-s/2, y+h/2);
+                path.lineTo(x-w/2+s/2, y-h/2);
+                path.close();
+            });
+
+            addShapeTool("http://zwibbler.com/paperio/icon-circle.png", function(x, y, path) {
+                var radius = 50;
+                path.moveTo( x, y - radius );
+                path.cornerTo( x + radius, y - radius, 
+                                      x + radius, y );
+                path.cornerTo( x + radius, y + radius, 
+                                      x, y + radius );
+                path.cornerTo( x - radius, y + radius, 
+                                      x - radius, y);
+                path.cornerTo( x - radius, y - radius, 
+                                      x, y - radius );
+                path.close();
+            });
+
+            addShapeTool("http://zwibbler.com/paperio/icon-triangle.png", function(x, y, path) {
+                var radius = 50;
+                path.moveTo( x, y - radius );
+                path.lineTo( x + radius, y + radius );
+                path.lineTo( x - radius, y + radius );
+                path.lineTo(x, y-radius);
+                path.close();
+            });
+
+            addShapeTool("http://zwibbler.com/paperio/icon-diamond.png", function(x, y, path) {
+                var radius = 50;
+                path.moveTo( x, y - radius );
+                path.lineTo( x + radius, y );
+                path.lineTo( x, y + radius );
+                path.lineTo( x - radius, y );
+                path.lineTo( x, y-radius);
+                path.close();
+            }); */
+			
+			
+            addImageTool("./images1/comp1.gif", actionfn); 
+			addImageTool("./images1/comp2.gif", actionfn);
+			addWireTool("./images1/comp3.gif", actionfn);
+			addImageTool("./images1/comp4.gif", actionfn);
+			addImageTool("./images1/comp5.gif", actionfn);
+			addImageTool("./images1/comp6.gif", actionfn);
+			addImageTool("./images1/comp7.gif", actionfn);
+			addImageTool("./images1/comp8.gif", actionfn);
+			addImageTool("./images1/comp9.gif", actionfn);
+			addImageTool("./images1/comp10.gif", actionfn);
+			addImageTool("./images1/comp11.gif", actionfn);
+			addImageTool("./images1/comp12.gif", actionfn);
+            
+
+            onevent("zwibbler-div", "dragover", function(e) {
+                e.preventDefault(); 
+            });
+
+            onevent("zwibbler-div", "drop", function(e) {
+                if (DraggingImage) {
+                    DraggingImage.dropfn(e.pageX - 250, e.pageY-64);
+                    e.preventDefault();
+                }
+            });
+
+            onevent("pick-button", "click", function(e) {
+                zwibbler.usePickTool();
+            });
+
+            onevent("arrow-button", "click", function(e) {
+                zwibbler.useLineTool();
+            });
+
+            onevent("undo-button", "click", function(e) {
+                zwibbler.undo();
+            });
+
+            onevent("redo-button", "click", function(e) {
+                zwibbler.redo();
+            });
+
+        </script>
+
+
+    </body>
+</html>
