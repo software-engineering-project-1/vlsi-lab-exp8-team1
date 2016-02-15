@@ -217,12 +217,12 @@
 
                 img.dropfn = function(x, y) {
                     if (actionfn) {
-                        actionfn(x, y, url);
+                        actionfn(x, y, url2);
 						
                     } else {
                         zwibbler.beginTransaction();
                         var id = zwibbler.createNode("ImageNode", {
-                            url: url2
+                            url: url
                         });
                         zwibbler.translateNode(id, x-img.naturalWidth/2,
                                 y-img.naturalHeight/2);
