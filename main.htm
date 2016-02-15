@@ -151,7 +151,8 @@
 
             var zwibbler = Zwibbler.create("zwibbler-div", {
                 showToolbar: false,
-                multilineText: true
+                multilineText: true, 
+                showColourPanel: false
             });
 
             var DraggingImage;
@@ -203,7 +204,7 @@
                 zwibbler.commitTransaction();
             }
 			
-            function addImageTool(url, actionfn) {
+            function addImageTool(url,url2, actionfn) {
                 var div = document.createElement("div");
                 var img = document.createElement("img");
                 div.appendChild(img);
@@ -221,7 +222,7 @@
                     } else {
                         zwibbler.beginTransaction();
                         var id = zwibbler.createNode("ImageNode", {
-                            url: url
+                            url: url2
                         });
                         zwibbler.translateNode(id, x-img.naturalWidth/2,
                                 y-img.naturalHeight/2);
@@ -297,7 +298,7 @@
                 };
 
                 img.onclick = function() {
-					  zwibbler.useLineTool();
+					 zwibbler.useLineTool(properties={strokeStyle: "#ffffff"});
                 };
                 
             }
@@ -363,14 +364,14 @@
             addImageDummyTool("./images1/comp1.gif", actionfn); 
 			addImageDummyTool("./images1/comp2.gif", actionfn);
 			addWireTool("./images1/comp3.gif", actionfn);
-			addImageTool("./images1/comp4.gif", actionfn);
+			addImageTool("./images1/comp4.gif", "./images1/input.jpg", actionfn);
 			addImageDummyTool("./images1/comp5.gif", actionfn);
 			addImageDummyTool("./images1/comp6.gif", actionfn);
 			addImageDummyTool("./images1/comp7.gif", actionfn);
 			addImageDummyTool("./images1/comp8.gif", actionfn);
 			addImageDummyTool("./images1/comp9.gif", actionfn);
-			addImageTool("./images1/comp10.gif", actionfn);
-			addImageTool("./images1/comp11.gif", actionfn);
+			addImageTool("./images1/comp10.gif", "./images1/output.jpg", actionfn);
+			addImageTool("./images1/comp11.gif", "./images1/latch.jpg", actionfn);
 			addImageDummyTool("./images1/comp12.gif", actionfn);
             
 
