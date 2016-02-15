@@ -10,7 +10,7 @@
             }
             #zwibbler-div {
                 position: absolute;
-                top: 64px;
+                top: 128px;
                 left: 250px;     
                 bottom: 0;     
                 right: 0;
@@ -31,6 +31,19 @@
                 line-height: 60px;
                 color: #ccc;
             }
+            #subheader {
+                position: absolute;
+                top: 64px;
+                left: 0px;
+                right: 0;
+                height: 64px;
+                background: black;        
+                font-family: "Life Savers", sans-serif;
+                font-weight: bold;
+                font-size: 50px;
+                line-height: 60px;
+                color: #ccc;
+            }
 
             #header img {
                 vertical-align: middle;
@@ -42,7 +55,7 @@
                 left: 0px;
                 width: 250px;
                 bottom: 0;
-                overflow-y: scroll;
+                
             }
             #toolbar div {
                 display: inline-block;
@@ -65,11 +78,35 @@
                 <span style="color:white">D-FLIP FLOP:</span>Positive Edge Trigger 
             </div>
         </div>
+        
+        <div id= subheader>
+         <center>
+         <button onclick="Simulate()">Simulate</button>
+         <select id ="InputWave">
+              <option value="I1">InputWave1</option>
+              <option value="I2">InputWave2</option>
+              <option value="I3">InputWave3</option>
+              <option value="I4">InputWave4</option>
+        </select>
+        </center> 
+        </div>
         <div id=toolbar>
         </div>
         <div id=zwibbler-div> </div>
 
         <script>
+        function Simulate() {
+                if(1){
+                    // input function was correct
+                    //alert("Downloading verilog File");
+                    alert(document.getElementById("InputWave").value);
+                }
+                else{
+
+                    // input circuit is incorrect 
+                    alert("Input Circuit Is incorrect");
+                }
+            }
             function Path() {
                 this.commands = [];
             }
@@ -162,7 +199,7 @@
                 zwibbler.translateNode(imageid, x-100, y-100);
                 zwibbler.translateNode(textid, x-100+15, y-100+65);
 
-                //zwibbler.createGroup([imageid, textid]);
+                zwibbler.createGroup([imageid, textid]);
                 zwibbler.commitTransaction();
             }
 			
