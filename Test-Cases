@@ -1,0 +1,28 @@
+* Author: Divya Kukar
+* Date Created: 21 Feb 2016
+* Environment
+  - OS: Windows 7,Ubuntu-16.04,CentOS-6
+  - Browsers: Firefox-42.0,Chrome-47.0,Chromium-45.0
+  - Bandwidth : 100Mbps
+  - Hardware Configuration:8GB RAM , 
+  - Processor:i5
+
+* Objective
+  - To Run The experiment on a browser without any plugin
+
+* Pre conditions
+  - An updated browser with JavaScript enabled
+
+* Post conditions
+   - Nil
+* Test Steps
+  1. Click on the Start Test link 
+  2. Verify that you can start the test
+
+* Expected result
+  1. A page opens up with toolbars in the right side
+  2. Content should be present with no distortions and Junk characters
+
+* Review comments
+
+
